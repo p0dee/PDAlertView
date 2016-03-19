@@ -36,7 +36,7 @@ internal class AlertSelectionControl: UIControl {
         setupViews()
         setupConstraints()
         stackView.distribution = .FillEqually
-        stackView.spacing = 1.0 / UIScreen.mainScreen().scale
+        stackView.spacing = CGFloat(actionButtonLineWidth())
     }
     
     required init?(coder aDecoder: NSCoder) {

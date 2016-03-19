@@ -8,6 +8,11 @@
 
 import UIKit
 
+internal func actionButtonLineWidth() -> Double {
+    let scale = Double(UIScreen.mainScreen().scale)
+    return (scale > 2.0 ? 2.0 : 1.0) / scale
+}
+
 private extension AlertSelectionControl {
     
     private var selectedView: AlertSelectionComponentView? {
@@ -126,7 +131,7 @@ internal class AlertBodyView: UIView {
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(vibracyView)
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(blurView)
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(bgView)
-        let lineWidth = NSNumber(double: 1.0 / Double(UIScreen.mainScreen().scale))
+        let lineWidth = NSNumber(double: actionButtonLineWidth())
         let metrics = ["lineWidth" : lineWidth]
         let views = ["contentView" : contentView, "selectionView" : selectionView]
         let formatHorizG = "H:|[contentView]|"
@@ -178,7 +183,7 @@ internal class AlertBodyView: UIView {
     private class MaskView: UIView {
         
         weak private var bodyView: AlertBodyView?
-        private static let PixelWidth: CGFloat = 1.0 / UIScreen.mainScreen().scale
+        private static let PixelWidth = CGFloat(actionButtonLineWidth())
         
         convenience init(bodyView: AlertBodyView) {
             self.init()
