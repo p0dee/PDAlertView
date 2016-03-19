@@ -103,9 +103,10 @@ public class AlertView: UIView, AlertBodyViewDelegate {
     
     public func showOn(targetView: UIView) {
         targetView.addSubview(self)
+        let ratio = 320 / bodyView.intrinsicContentSize().width
         self.alpha = 0.0
         bodyView.alpha = 0.0
-        bodyView.transform = CGAffineTransformMakeScale(320/270, 320/270)
+        bodyView.transform = CGAffineTransformMakeScale(ratio, ratio)
         UIView.animateWithDuration(0.45, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
             self.alpha = 1.0
             self.bodyView.alpha = 1.0
