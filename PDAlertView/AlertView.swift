@@ -11,8 +11,8 @@ import UIKit
 
 public class AlertView: UIView, AlertBodyViewDelegate {
     
-    private let backgroundView = AlertBackgroundView() //lazyにしたい
-    private let bodyView = AlertBodyView() //lazyにしたい
+    private let backgroundView = AlertBackgroundView()
+    private let bodyView = AlertBodyView()
     private var actions = [AlertAction]()
     private var backgroundBottomConstraint: NSLayoutConstraint?
     
