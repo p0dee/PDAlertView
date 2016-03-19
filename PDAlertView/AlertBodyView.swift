@@ -199,7 +199,7 @@ internal class AlertBodyView: UIView {
             }
             
             let context = UIGraphicsGetCurrentContext()
-            CGContextAddRect(context, bodyView.contentView.frame)
+            CGContextAddRect(context, CGRectInset(bodyView.contentView.frame, 0, -20)) //FIXME:
             for view in bodyView.selectionView.components {
                 if view.isEqual(bodyView.selectionView.selectedView) {
                     continue
