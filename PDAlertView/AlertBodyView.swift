@@ -29,7 +29,7 @@ internal class AlertBodyView: UIView {
     private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let bgView = UIView()
     private var bodyMaskView: MaskView?
-    private let contentView = UIView()
+    private let contentView = UIStackView()
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
     private let selectionView = AlertSelectionControl()
@@ -102,21 +102,19 @@ internal class AlertBodyView: UIView {
         self.addSubview(bgView)
         bgView.maskView = bodyMaskView
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.layoutMargins = UIEdgeInsetsMake(20, 18, 20, 18)
+        contentView.layoutMargins = UIEdgeInsetsMake(20, 18, 12, 18)
+        contentView.axis = .Vertical
+        contentView.spacing = 8.0
         self.addSubview(contentView)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.boldSystemFontOfSize(17.0)
         titleLabel.textAlignment = .Center
         titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
-        contentView.addSubview(titleLabel)
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addArrangedSubview(titleLabel)
         messageLabel.numberOfLines = 0
         messageLabel.font = UIFont.systemFontOfSize(13.0)
         messageLabel.textAlignment = .Center
         messageLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
-        contentView.addSubview(messageLabel)
-        accessoryContentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(accessoryContentView)
+        contentView.addArrangedSubview(messageLabel)
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         selectionView.addTarget(bodyMaskView, action: "selectionViewDidChange:", forControlEvents: .ValueChanged)
         selectionView.addTarget(self, action: "selectionViewDidTouchUpInside:", forControlEvents: .TouchUpInside)
@@ -129,15 +127,11 @@ internal class AlertBodyView: UIView {
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(blurView)
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(bgView)
         let lineWidth = NSNumber(double: 1.0 / Double(UIScreen.mainScreen().scale))
-        let metrics = ["lineWidth" : lineWidth];
-        let views = ["contentView" : contentView, "titleLabel" : titleLabel, "messageLabel" : messageLabel, "selectionView" : selectionView, "accessoryContentView" : accessoryContentView]
-        let formatHoriz = "H:|-[titleLabel]-|"
-        cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatHoriz, options: .DirectionLeadingToTrailing, metrics: nil, views: views)
-        let formatVert = "V:|-[titleLabel]-(10)-[messageLabel]-(10)-[accessoryContentView]-|"
-        cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatVert, options: [.AlignAllLeading, .AlignAllTrailing] , metrics: nil, views: views)
+        let metrics = ["lineWidth" : lineWidth]
+        let views = ["contentView" : contentView, "selectionView" : selectionView]
         let formatHorizG = "H:|[contentView]|"
         cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatHorizG, options: .DirectionLeadingToTrailing, metrics: metrics, views: views)
-        let formatVertG = "V:|[contentView][selectionView]|"
+        let formatVertG = "V:|-(20)-[contentView]-(20)-[selectionView]|"
         cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatVertG, options: [.AlignAllLeading, .AlignAllTrailing], metrics: metrics, views: views)
         NSLayoutConstraint.activateConstraints(cstrs)
     }
