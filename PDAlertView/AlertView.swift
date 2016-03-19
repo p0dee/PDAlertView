@@ -53,6 +53,7 @@ public class AlertView: UIView, AlertBodyViewDelegate {
     }
     
     override public func didMoveToSuperview() {
+        guard self.superview != nil else { return }
         self.translatesAutoresizingMaskIntoConstraints = false
         let cstrs = NSLayoutConstraint.constraintsToFillSuperview(self)
         NSLayoutConstraint.activateConstraints(cstrs)
@@ -100,12 +101,26 @@ public class AlertView: UIView, AlertBodyViewDelegate {
         bodyView.addAction(action)
     }
     
-    public func show() {
-        
+    public func showOn(targetView: UIView) {
+        targetView.addSubview(self)
+        self.alpha = 0.0
+        bodyView.alpha = 0.0
+        bodyView.transform = CGAffineTransformMakeScale(320/270, 320/270)
+        UIView.animateWithDuration(0.2) {
+            self.alpha = 1.0
+        }
+        UIView.animateWithDuration(0.45, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.bodyView.alpha = 1.0
+            self.bodyView.transform = CGAffineTransformIdentity
+            }, completion: nil)
     }
     
     public func dismiss() {
-        
+        UIView.animateWithDuration(0.45, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .CurveEaseOut, animations: { () -> Void in
+            self.alpha = 0.0
+            }, completion: { _ in
+                self.removeFromSuperview()
+        })
     }
     
     //MARK: <AlertBodyViewDelegate>
