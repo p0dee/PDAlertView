@@ -10,20 +10,20 @@ import UIKit
 
 extension NSLayoutConstraint {
     
-    class func constraintsToFillSuperview(targetView: UIView) -> [NSLayoutConstraint] {
+    class func constraintsToFillSuperview(_ targetView: UIView) -> [NSLayoutConstraint] {
         guard let superview = targetView.superview else {
             assert(false, "targetView must have its superview.")
             return []
         }
         var cstrs = [NSLayoutConstraint]()
-        cstrs.append(targetView.leadingAnchor.constraintEqualToAnchor(superview.leadingAnchor))
-        cstrs.append(targetView.topAnchor.constraintEqualToAnchor(superview.topAnchor))
-        cstrs.append(targetView.trailingAnchor.constraintEqualToAnchor(superview.trailingAnchor))
-        cstrs.append(targetView.bottomAnchor.constraintEqualToAnchor(superview.bottomAnchor))
+        cstrs.append(targetView.leadingAnchor.constraint(equalTo: superview.leadingAnchor))
+        cstrs.append(targetView.topAnchor.constraint(equalTo: superview.topAnchor))
+        cstrs.append(targetView.trailingAnchor.constraint(equalTo: superview.trailingAnchor))
+        cstrs.append(targetView.bottomAnchor.constraint(equalTo: superview.bottomAnchor))
         return cstrs
     }
     
-    class func constraintsToFillSuperviewMarginsGuide(targetView: UIView) -> [NSLayoutConstraint] {
+    class func constraintsToFillSuperviewMarginsGuide(_ targetView: UIView) -> [NSLayoutConstraint] {
         // 以下じゃダメ。なぜ？？
         //        guard let margin = targetView.superview?.layoutMarginsGuide else {
         //            assert(false, "targetView must have its superview.")
@@ -43,8 +43,8 @@ extension NSLayoutConstraint {
         let formatHoriz = "H:|-[view]-|"
         let formatVert = "V:|-[view]-|"
         var cstrs = [NSLayoutConstraint]()
-        cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatHoriz, options: .DirectionLeadingToTrailing, metrics: nil, views: views)
-        cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatVert, options: .DirectionLeadingToTrailing, metrics: nil, views: views)
+        cstrs += NSLayoutConstraint.constraints(withVisualFormat: formatHoriz, options: .directionLeadingToTrailing, metrics: nil, views: views)
+        cstrs += NSLayoutConstraint.constraints(withVisualFormat: formatVert, options: .directionLeadingToTrailing, metrics: nil, views: views)
         return cstrs
     }
     

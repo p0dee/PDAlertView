@@ -34,8 +34,8 @@ public class AlertView: UIView, AlertBodyViewDelegate {
         super.init(frame: frame)
         setupViews()
         setupConstraints()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardHeightDidChange:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardHeightDidChange:", name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: "keyboardHeightDidChange:", name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: "keyboardHeightDidChange:", name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -49,14 +49,14 @@ public class AlertView: UIView, AlertBodyViewDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override public func didMoveToSuperview() {
         guard self.superview != nil else { return }
         self.translatesAutoresizingMaskIntoConstraints = false
         let cstrs = NSLayoutConstraint.constraintsToFillSuperview(self)
-        NSLayoutConstraint.activateConstraints(cstrs)
+        NSLayoutConstraint.activate(cstrs)
     }
 
     private func setupViews() {
@@ -72,9 +72,9 @@ public class AlertView: UIView, AlertBodyViewDelegate {
         var cstrs = [NSLayoutConstraint]()
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(backgroundView)
         backgroundBottomConstraint = cstrs.last
-        cstrs.append(bodyView.centerXAnchor.constraintEqualToAnchor(backgroundView.centerXAnchor))
-        cstrs.append(bodyView.centerYAnchor.constraintEqualToAnchor(backgroundView.centerYAnchor))
-        NSLayoutConstraint.activateConstraints(cstrs)
+        cstrs.append(bodyView.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor))
+        cstrs.append(bodyView.centerYAnchor.constraint(equalTo: backgroundView.centerYAnchor))
+        NSLayoutConstraint.activate(cstrs)
     }
     
     @objc private func keyboardHeightDidChange(sender: NSNotification) {
@@ -83,11 +83,11 @@ public class AlertView: UIView, AlertBodyViewDelegate {
         }
         var delta: CGFloat = 0
         switch sender.name {
-        case UIKeyboardWillShowNotification:
-            if let info = sender.userInfo, let sz = info[UIKeyboardFrameEndUserInfoKey]?.CGRectValue {
+        case NSNotification.Name.UIKeyboardWillShow:
+            if let info = sender.userInfo, let sz = (info[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
                 delta = -sz.height
             }
-        case UIKeyboardWillHideNotification:
+        case NSNotification.Name.UIKeyboardWillHide:
             delta = 0
         default:
             break
@@ -96,26 +96,26 @@ public class AlertView: UIView, AlertBodyViewDelegate {
     }
     
     //MARK: public interface
-    public func addAction(action: AlertAction) {
+    public func addAction(_ action: AlertAction) {
         actions.append(action)
         bodyView.addAction(action)
     }
     
     public func showOn(targetView: UIView) {
         targetView.addSubview(self)
-        let ratio = 320 / bodyView.intrinsicContentSize().width
+        let ratio = 320 / bodyView.intrinsicContentSize.width
         self.alpha = 0.0
         bodyView.alpha = 0.0
-        bodyView.transform = CGAffineTransformMakeScale(ratio, ratio)
-        UIView.animateWithDuration(0.45, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
+        bodyView.transform = CGAffineTransform(scaleX: ratio, y: ratio)
+        UIView.animate(withDuration: 0.45, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveEaseInOut, animations: { () -> Void in
             self.alpha = 1.0
             self.bodyView.alpha = 1.0
-            self.bodyView.transform = CGAffineTransformIdentity
+            self.bodyView.transform = .identity
             }, completion: nil)
     }
     
     public func dismiss() {
-        UIView.animateWithDuration(0.45, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.45, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: { () -> Void in
             self.alpha = 0.0
             }, completion: { _ in
                 self.removeFromSuperview()
@@ -123,7 +123,7 @@ public class AlertView: UIView, AlertBodyViewDelegate {
     }
     
     //MARK: <AlertBodyViewDelegate>
-    internal func bodyView(bodyView: AlertBodyView, didSelectedItemAtIndex index: Int) {
+    internal func bodyView(_ bodyView: AlertBodyView, didSelectedItemAtIndex index: Int) {
         actions[index].handler?()
     }
     

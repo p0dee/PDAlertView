@@ -9,29 +9,29 @@
 import UIKit
 
 internal func actionButtonLineWidth() -> Double {
-    let scale = Double(UIScreen.mainScreen().scale)
+    let scale = Double(UIScreen.main.scale)
     return (scale > 2.0 ? 2.0 : 1.0) / scale
 }
 
-private extension AlertSelectionControl {
+fileprivate extension AlertSelectionControl {
     
-    private var selectedView: AlertSelectionComponentView? {
-        if let selIdx = self.selectedIndex where selIdx < self.components.count {
+    fileprivate var selectedView: AlertSelectionComponentView? {
+        if let selIdx = self.selectedIndex, selIdx < self.components.count {
             return self.components[selIdx]
         } else {
             return nil
         }
-    }
     
+    }
 }
 
 internal protocol AlertBodyViewDelegate: class {
-    func bodyView(bodyView: AlertBodyView, didSelectedItemAtIndex index: Int)
+    func bodyView(_ bodyView: AlertBodyView, didSelectedItemAtIndex index: Int)
 }
 
 internal class AlertBodyView: UIView {
-    private let vibracyView = UIVisualEffectView(effect: UIVibrancyEffect(forBlurEffect: UIBlurEffect(style: .Dark)))
-    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+    private let vibracyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     private let bgView = UIView()
     private var bodyMaskView: MaskView?
     private let contentView = UIStackView()
@@ -72,11 +72,11 @@ internal class AlertBodyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal override func intrinsicContentSize() -> CGSize {
-        return CGSizeMake(270, UIViewNoIntrinsicMetric)
+    internal override var intrinsicContentSize: CGSize {
+        return CGSize(width: 270, height: UIViewNoIntrinsicMetric)
     }
     
-    internal override func willMoveToSuperview(newSuperview: UIView?) {
+    internal override func willMove(toSuperview newSuperview: UIView?) {
         setupViews()
         setupConstraints()
     }
@@ -87,8 +87,8 @@ internal class AlertBodyView: UIView {
     }
     
     //MARK:
-    func addAction(action: AlertAction) {
-        selectionView.addButtonWithTitle(action.title, style: action.style)
+    func addAction(_ action: AlertAction) {
+        selectionView.addButton(with: action.title, style: action.style)
         bodyMaskView?.setNeedsDisplay()
     }
     
@@ -97,32 +97,32 @@ internal class AlertBodyView: UIView {
         vibracyView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(vibracyView)
         let mask = UIView(frame: vibracyView.bounds)
-        mask.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        mask.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        mask.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mask.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         vibracyView.contentView.addSubview(mask)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(blurView)
         bgView.translatesAutoresizingMaskIntoConstraints = false
         bgView.backgroundColor = UIColor(white: 1.0, alpha: 0.7)
         self.addSubview(bgView)
-        bgView.maskView = bodyMaskView
+        bgView.mask = bodyMaskView
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.layoutMargins = UIEdgeInsetsMake(20, 18, 12, 18)
-        contentView.axis = .Vertical
+        contentView.axis = .vertical
         contentView.spacing = 8.0
         self.addSubview(contentView)
-        titleLabel.font = UIFont.boldSystemFontOfSize(17.0)
-        titleLabel.textAlignment = .Center
-        titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
+        titleLabel.textAlignment = .center
+        titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
         contentView.addArrangedSubview(titleLabel)
         messageLabel.numberOfLines = 0
-        messageLabel.font = UIFont.systemFontOfSize(13.0)
-        messageLabel.textAlignment = .Center
-        messageLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
+        messageLabel.font = UIFont.systemFont(ofSize: 13.0)
+        messageLabel.textAlignment = .center
+        messageLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
         contentView.addArrangedSubview(messageLabel)
         selectionView.translatesAutoresizingMaskIntoConstraints = false
-        selectionView.addTarget(bodyMaskView, action: "selectionViewDidChange:", forControlEvents: .ValueChanged)
-        selectionView.addTarget(self, action: "selectionViewDidTouchUpInside:", forControlEvents: .TouchUpInside)
+        selectionView.addTarget(bodyMaskView, action: "selectionViewDidChange:", for: .valueChanged)
+        selectionView.addTarget(self, action: "selectionViewDidTouchUpInside:", for: .touchUpInside)
         self.addSubview(selectionView)
     }
     
@@ -131,14 +131,14 @@ internal class AlertBodyView: UIView {
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(vibracyView)
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(blurView)
         cstrs += NSLayoutConstraint.constraintsToFillSuperview(bgView)
-        let lineWidth = NSNumber(double: actionButtonLineWidth())
+        let lineWidth = NSNumber(value: actionButtonLineWidth())
         let metrics = ["lineWidth" : lineWidth]
         let views = ["contentView" : contentView, "selectionView" : selectionView]
         let formatHorizG = "H:|[contentView]|"
-        cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatHorizG, options: .DirectionLeadingToTrailing, metrics: metrics, views: views)
+        cstrs += NSLayoutConstraint.constraints(withVisualFormat: formatHorizG, options: .directionLeadingToTrailing, metrics: metrics, views: views)
         let formatVertG = "V:|-(20)-[contentView]-(20)-[selectionView]|"
-        cstrs += NSLayoutConstraint.constraintsWithVisualFormat(formatVertG, options: [.AlignAllLeading, .AlignAllTrailing], metrics: metrics, views: views)
-        NSLayoutConstraint.activateConstraints(cstrs)
+        cstrs += NSLayoutConstraint.constraints(withVisualFormat: formatVertG, options: [.alignAllLeading, .alignAllTrailing], metrics: metrics, views: views)
+        NSLayoutConstraint.activate(cstrs)
     }
     
     @objc private func selectionViewDidTouchUpInside(sender: AlertSelectionControl) {
@@ -149,10 +149,10 @@ internal class AlertBodyView: UIView {
     
     private class AccessoryContentView: UIView {
         
-        private override func addSubview(view: UIView) {
+        private override func addSubview(_ view: UIView) {
             super.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = true
-            view.autoresizingMask = [view.autoresizingMask, .FlexibleLeftMargin, .FlexibleRightMargin]
+            view.autoresizingMask = [view.autoresizingMask, .flexibleLeftMargin, .flexibleRightMargin]
         }
         
         private override func layoutSubviews() {
@@ -166,12 +166,12 @@ internal class AlertBodyView: UIView {
             }
         }
         
-        private override func intrinsicContentSize() -> CGSize {
+        private override var intrinsicContentSize: CGSize {
             var maxY: CGFloat = 0
             for v in subviews {
-                maxY = max(maxY, CGRectGetMaxY(v.frame))
+                maxY = max(maxY, v.frame.maxY)
             }
-            return CGSizeMake(UIViewNoIntrinsicMetric, maxY)
+            return CGSize(width: UIViewNoIntrinsicMetric, height: maxY)
         }
         
         func hasContent() -> Bool {
@@ -187,41 +187,43 @@ internal class AlertBodyView: UIView {
         
         convenience init(bodyView: AlertBodyView) {
             self.init()
-            self.backgroundColor = UIColor.clearColor()
+            self.backgroundColor = UIColor.clear
             self.bodyView = bodyView
         }
         
-        private override func sizeThatFits(size: CGSize) -> CGSize {
+        private override func sizeThatFits(_ size: CGSize) -> CGSize {
             guard let bodyView = bodyView else {
                 return size
             }
             return bodyView.bounds.size
         }
         
-        private override func drawRect(rect: CGRect) {
+        private override func draw(_ rect: CGRect) {
             guard let bodyView = bodyView else {
                 return
             }
             
-            let context = UIGraphicsGetCurrentContext()
-            CGContextAddRect(context, CGRectInset(bodyView.contentView.frame, 0, -20)) //FIXME:
+            guard let context = UIGraphicsGetCurrentContext() else {
+                return
+            }
+            context.addRect(bodyView.contentView.frame.insetBy(dx: 0, dy: -20)) //FIXME:
             for view in bodyView.selectionView.components {
                 if view.isEqual(bodyView.selectionView.selectedView) {
                     continue
                 }
-                CGContextAddRect(context, CGRectMake(view.frame.origin.x + bodyView.selectionView.frame.origin.x, view.frame.origin.y + bodyView.selectionView.frame.origin.y + MaskView.PixelWidth, view.frame.size.width, view.frame.size.height))
+                context.addRect(CGRect(x: view.frame.origin.x + bodyView.selectionView.frame.origin.x, y: view.frame.origin.y + bodyView.selectionView.frame.origin.y + MaskView.PixelWidth, width: view.frame.size.width, height: view.frame.size.height))
             }
-            UIColor.blackColor().setFill()
-            CGContextFillPath(context)
+            UIColor.black.setFill()
+            context.fillPath()
             if let view = bodyView.selectionView.selectedView {
-                let rect = CGRectMake(view.frame.origin.x + bodyView.selectionView.frame.origin.x, view.frame.origin.y + bodyView.selectionView.frame.origin.y + MaskView.PixelWidth, view.frame.size.width, view.frame.size.height)
-                if bodyView.selectionView.axis == .Horizontal {
-                    CGContextAddRect(context, CGRectInset(rect, -MaskView.PixelWidth, 0))
+                let rect = CGRect(x: view.frame.origin.x + bodyView.selectionView.frame.origin.x, y: view.frame.origin.y + bodyView.selectionView.frame.origin.y + MaskView.PixelWidth, width: view.frame.size.width, height: view.frame.size.height)
+                if bodyView.selectionView.axis == .horizontal {
+                    context.addRect(rect.insetBy(dx: -MaskView.PixelWidth, dy: 0))
                 } else {
-                    CGContextAddRect(context, CGRectInset(rect, 0, -MaskView.PixelWidth))
+                    context.addRect(rect.insetBy(dx: 0, dy: -MaskView.PixelWidth))
                 }
-                UIColor.blackColor().colorWithAlphaComponent(0.5).setFill()
-                CGContextFillPath(context)
+                UIColor.black.withAlphaComponent(0.5).setFill()
+                context.fillPath()
             }
         }
         

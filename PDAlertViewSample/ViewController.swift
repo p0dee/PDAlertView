@@ -35,16 +35,18 @@ class ViewController: UIViewController {
 
 class RainbowView: UIView {
     
-    override func drawRect(rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
+    override func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
         let numOfLines: Int32 = 15
-        let scale = UIScreen.mainScreen().scale
+        let scale = UIScreen.main.scale
         let width = round(rect.size.width * scale / CGFloat(numOfLines)) / scale
         for i in 0..<numOfLines {
             let posX = width * CGFloat(i)
             let fillColor = UIColor(hue: CGFloat(i) / CGFloat(numOfLines), saturation: 0.75, brightness: 1.0, alpha: 1.0)
             fillColor.setFill()
-            CGContextFillRect(context, CGRectMake(posX, 0, width, rect.size.height))
+            context.fill(CGRect(x: posX, y: 0, width: width, height: rect.size.height))
         }
     }
     

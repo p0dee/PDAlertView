@@ -20,12 +20,12 @@ internal class AlertSelectionControl: UIControl {
     var selectedIndex: Int? {
         didSet {
             if (selectedIndex != oldValue) {
-                sendActionsForControlEvents(.ValueChanged)
+                sendActions(for: .valueChanged)
             }
         }
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
             selectedIndex = nil
         }
@@ -35,7 +35,7 @@ internal class AlertSelectionControl: UIControl {
         super.init(frame: frame)
         setupViews()
         setupConstraints()
-        stackView.distribution = .FillEqually
+        stackView.distribution = .fillEqually
         stackView.spacing = CGFloat(actionButtonLineWidth())
     }
     
@@ -50,25 +50,25 @@ internal class AlertSelectionControl: UIControl {
     
     private func setupConstraints() {
         let cstrs = NSLayoutConstraint.constraintsToFillSuperview(stackView)
-        NSLayoutConstraint.activateConstraints(cstrs)
+        NSLayoutConstraint.activate(cstrs)
     }
     
-    func addButtonWithTitle(title: String, style: AlertActionStyle) {
+    func addButton(with title: String, style: AlertActionStyle) {
         let component = AlertSelectionComponentView(title: title, style: style)
-        component.userInteractionEnabled = false
+        component.isUserInteractionEnabled = false
         stackView.addArrangedSubview(component)
         components.append(component)
-        if stackView.axis == .Vertical {
+        if stackView.axis == .vertical {
             //Do nothing.
-        } else if components.count > 2 || component.preferredLayoutAxis == .Vertical {
-            stackView.axis = .Vertical
+        } else if components.count > 2 || component.preferredLayoutAxis == .vertical {
+            stackView.axis = .vertical
         }
     }
     
-    private func selectedIndexWithPoint(point: CGPoint) -> Int? {
+    private func selectedIndex(with point: CGPoint) -> Int? {
         for view in stackView.arrangedSubviews {
-            if let view = view as? AlertSelectionComponentView where CGRectContainsPoint(view.frame, point) {
-                return components.indexOf(view)
+            if let view = view as? AlertSelectionComponentView, view.frame.contains(point) {
+                return components.index(of: view)
             }
         }
         return nil
@@ -86,25 +86,25 @@ internal class AlertSelectionControl: UIControl {
         }
     }
     
-    internal override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    internal override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            let point = touch.locationInView(self)
-            selectedIndex = selectedIndexWithPoint(point)
+            let point = touch.location(in: self)
+            selectedIndex = selectedIndex(with: point)
         }
     }
     
-    internal override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    internal override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            let point = touch.locationInView(self)
-            selectedIndex = selectedIndexWithPoint(point)
+            let point = touch.location(in: self)
+            selectedIndex = selectedIndex(with: point)
         }
     }
     
-    internal override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    internal override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            let point = touch.locationInView(self)
-            if CGRectContainsPoint(self.bounds, point) {
-                sendActionsForControlEvents(.TouchUpInside)
+            let point = touch.location(in: self)
+            if self.bounds.contains(point) {
+                sendActions(for: .touchUpInside)
             }
         }
         selectedIndex = nil
@@ -115,15 +115,15 @@ internal class AlertSelectionControl: UIControl {
 internal class AlertSelectionComponentView: UIView {
     
     private var label = UILabel()
-    private var style: AlertActionStyle = .Default
+    fileprivate var style: AlertActionStyle = .Default
     
-    private var preferredLayoutAxis: UILayoutConstraintAxis {
+    fileprivate var preferredLayoutAxis: UILayoutConstraintAxis {
         guard let text = label.text else {
-            return .Vertical
+            return .vertical
         }
         let attrs = [NSFontAttributeName : label.font]
-        let size = NSString(string: text).sizeWithAttributes(attrs)
-        return size.width > 115 ? .Vertical : .Horizontal
+        let size = NSString(string: text).size(attributes: attrs)
+        return size.width > 115 ? .vertical : .horizontal
     }
     
     override init(frame: CGRect) {
@@ -145,9 +145,9 @@ internal class AlertSelectionComponentView: UIView {
         label.text = title
         switch style {
         case .Cancel:
-            label.font = UIFont.boldSystemFontOfSize(17.0)
+            label.font = UIFont.boldSystemFont(ofSize: 17.0)
         default:
-            label.font = UIFont.systemFontOfSize(17.0)
+            label.font = UIFont.systemFont(ofSize: 17.0)
         }
     }
     
@@ -155,23 +155,23 @@ internal class AlertSelectionComponentView: UIView {
         self.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 10)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = tintColor
-        label.textAlignment = .Center
+        label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.6
-        label.lineBreakMode = .ByTruncatingMiddle
-        label.baselineAdjustment = .AlignCenters
-        label.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
+        label.lineBreakMode = .byTruncatingMiddle
+        label.baselineAdjustment = .alignCenters
+        label.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
         self.addSubview(label)
     }
     
     private func setupConstraints() {
         let cstrs = NSLayoutConstraint.constraintsToFillSuperviewMarginsGuide(label)
-        NSLayoutConstraint.activateConstraints(cstrs)
+        NSLayoutConstraint.activate(cstrs)
     }
     
     //MARK: override
-    internal override func intrinsicContentSize() -> CGSize {
-        return CGSizeMake(UIViewNoIntrinsicMetric, 44)
+    internal override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIViewNoIntrinsicMetric, height: 44)
     }
     
     internal override func tintColorDidChange() {
