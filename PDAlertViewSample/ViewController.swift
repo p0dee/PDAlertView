@@ -14,11 +14,9 @@ class ViewController: UIViewController {
     override func loadView() {
         self.view = RainbowView()
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let dialog = AlertView(title: "Hello!", message: "Message here.")
+    
+    func showDialog() {
+        let dialog = AlertView(title: "Hello!", message: "Message here kldjfkdjalfjdaljfldksajfldjalfjdl;ajfldjalfjdlsa.")
         let action1 = AlertAction(title: "OK", style: .Default) { () -> Void in
             print("OK is pressed.");
         }
@@ -27,8 +25,25 @@ class ViewController: UIViewController {
         }
         dialog.addAction(action1)
         dialog.addAction(action2)
-//        dialog.show()
-        self.view.addSubview(dialog);
+        dialog.showOn(self.view)
+    }
+    
+    func showSystemDialog() {
+        let dialog = UIAlertController(title: "Hello!", message: "Message here.", preferredStyle: .Alert)
+        let action1 = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
+            
+        }
+        let action2 = UIAlertAction(title: "Cancel", style: .Default) { (action) -> Void in
+            
+        }
+        dialog.addAction(action1)
+        dialog.addAction(action2)
+        self.presentViewController(dialog, animated: true, completion: nil)
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches, withEvent: event)
+        showDialog()
     }
 
 }
