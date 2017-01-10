@@ -20,6 +20,12 @@
 		021584A81C2EC62D000DDDEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 021584A71C2EC62D000DDDEA /* Assets.xcassets */; };
 		021584AB1C2EC62D000DDDEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 021584A91C2EC62D000DDDEA /* LaunchScreen.storyboard */; };
 		021584B01C2EC67F000DDDEA /* PDAlertView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021584831C2EC459000DDDEA /* PDAlertView.framework */; };
+		02D2B0001C9D647500AFAF49 /* jonycurve@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02D2AFFD1C9D647500AFAF49 /* jonycurve@3x.png */; };
+		02D2B0011C9D647500AFAF49 /* jonycurve@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02D2AFFE1C9D647500AFAF49 /* jonycurve@2x.png */; };
+		02D2B0021C9D647500AFAF49 /* jonycurve@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02D2AFFF1C9D647500AFAF49 /* jonycurve@1x.png */; };
+		02D2B0031C9D65B200AFAF49 /* jonycurve@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02D2AFFD1C9D647500AFAF49 /* jonycurve@3x.png */; };
+		02D2B0041C9D65B200AFAF49 /* jonycurve@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02D2AFFE1C9D647500AFAF49 /* jonycurve@2x.png */; };
+		02D2B0051C9D65B200AFAF49 /* jonycurve@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02D2AFFF1C9D647500AFAF49 /* jonycurve@1x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +45,9 @@
 		021584A71C2EC62D000DDDEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		021584AA1C2EC62D000DDDEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		021584AC1C2EC62D000DDDEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02D2AFFD1C9D647500AFAF49 /* jonycurve@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jonycurve@3x.png"; sourceTree = "<group>"; };
+		02D2AFFE1C9D647500AFAF49 /* jonycurve@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jonycurve@2x.png"; sourceTree = "<group>"; };
+		02D2AFFF1C9D647500AFAF49 /* jonycurve@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jonycurve@1x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +97,9 @@
 				021584911C2EC5F1000DDDEA /* AlertSelectionControl.swift */,
 				021584921C2EC5F1000DDDEA /* AlertView.swift */,
 				021584931C2EC5F1000DDDEA /* NSLayoutConstraintAdditions.swift */,
+				02D2AFFD1C9D647500AFAF49 /* jonycurve@3x.png */,
+				02D2AFFE1C9D647500AFAF49 /* jonycurve@2x.png */,
+				02D2AFFF1C9D647500AFAF49 /* jonycurve@1x.png */,
 				021584881C2EC459000DDDEA /* Info.plist */,
 			);
 			path = PDAlertView;
@@ -198,6 +210,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02D2B0021C9D647500AFAF49 /* jonycurve@1x.png in Resources */,
+				02D2B0011C9D647500AFAF49 /* jonycurve@2x.png in Resources */,
+				02D2B0001C9D647500AFAF49 /* jonycurve@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +223,9 @@
 				021584AB1C2EC62D000DDDEA /* LaunchScreen.storyboard in Resources */,
 				021584A81C2EC62D000DDDEA /* Assets.xcassets in Resources */,
 				021584A61C2EC62D000DDDEA /* Main.storyboard in Resources */,
+				02D2B0051C9D65B200AFAF49 /* jonycurve@1x.png in Resources */,
+				02D2B0041C9D65B200AFAF49 /* jonycurve@2x.png in Resources */,
+				02D2B0031C9D65B200AFAF49 /* jonycurve@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
