@@ -149,13 +149,13 @@ internal class AlertBodyView: UIView {
     
     private class AccessoryContentView: UIView {
         
-        private override func addSubview(_ view: UIView) {
+        override func addSubview(_ view: UIView) {
             super.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = true
             view.autoresizingMask = [view.autoresizingMask, .flexibleLeftMargin, .flexibleRightMargin]
         }
         
-        private override func layoutSubviews() {
+        override func layoutSubviews() {
             super.layoutSubviews()
             for v in self.subviews {
                 var frame = v.frame
@@ -166,7 +166,7 @@ internal class AlertBodyView: UIView {
             }
         }
         
-        private override var intrinsicContentSize: CGSize {
+        override var intrinsicContentSize: CGSize {
             var maxY: CGFloat = 0
             for v in subviews {
                 maxY = max(maxY, v.frame.maxY)
@@ -191,14 +191,14 @@ internal class AlertBodyView: UIView {
             self.bodyView = bodyView
         }
         
-        private override func sizeThatFits(_ size: CGSize) -> CGSize {
+        override func sizeThatFits(_ size: CGSize) -> CGSize {
             guard let bodyView = bodyView else {
                 return size
             }
             return bodyView.bounds.size
         }
         
-        private override func draw(_ rect: CGRect) {
+        override func draw(_ rect: CGRect) {
             guard let bodyView = bodyView else {
                 return
             }
