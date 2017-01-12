@@ -121,8 +121,8 @@ internal class AlertBodyView: UIView {
         messageLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
         contentView.addArrangedSubview(messageLabel)
         selectionView.translatesAutoresizingMaskIntoConstraints = false
-        selectionView.addTarget(bodyMaskView, action: "selectionViewDidChange:", for: .valueChanged)
-        selectionView.addTarget(self, action: "selectionViewDidTouchUpInside:", for: .touchUpInside)
+        selectionView.addTarget(bodyMaskView, action: #selector(MaskView.selectionViewDidChange(_:)), for: .valueChanged)
+        selectionView.addTarget(self, action: #selector(selectionViewDidTouchUpInside(_:)), for: .touchUpInside)
         self.addSubview(selectionView)
     }
     
@@ -141,7 +141,7 @@ internal class AlertBodyView: UIView {
         NSLayoutConstraint.activate(cstrs)
     }
     
-    @objc private func selectionViewDidTouchUpInside(sender: AlertSelectionControl) {
+    @objc private func selectionViewDidTouchUpInside(_ sender: AlertSelectionControl) {
         if let selIdx = selectionView.selectedIndex {
             delegate?.bodyView(self, didSelectedItemAtIndex: selIdx)
         }
@@ -227,7 +227,7 @@ internal class AlertBodyView: UIView {
             }
         }
         
-        @objc func selectionViewDidChange(sender: AlertSelectionControl) {
+        @objc func selectionViewDidChange(_ sender: AlertSelectionControl) {
             setNeedsDisplay()
         }
         

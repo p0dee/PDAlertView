@@ -34,8 +34,8 @@ public class AlertView: UIView, AlertBodyViewDelegate {
         super.init(frame: frame)
         setupViews()
         setupConstraints()
-        NotificationCenter.default.addObserver(self, selector: "keyboardHeightDidChange:", name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: "keyboardHeightDidChange:", name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHeightDidChange(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHeightDidChange(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -77,7 +77,7 @@ public class AlertView: UIView, AlertBodyViewDelegate {
         NSLayoutConstraint.activate(cstrs)
     }
     
-    @objc private func keyboardHeightDidChange(sender: NSNotification) {
+    @objc private func keyboardHeightDidChange(_ sender: NSNotification) {
         guard let backgroundBottomConstraint = backgroundBottomConstraint else {
             return
         }
