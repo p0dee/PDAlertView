@@ -78,7 +78,7 @@ internal class AlertSelectionControl: UIControl {
     internal override func tintColorDidChange() {
         for comp in components {
             switch comp.style {
-            case .Default:
+            case .default:
                 comp.tintColor = tintColor
             default:
                 break
@@ -115,7 +115,7 @@ internal class AlertSelectionControl: UIControl {
 internal class AlertSelectionComponentView: UIView {
     
     private var label = UILabel()
-    fileprivate var style: AlertActionStyle = .Default
+    fileprivate var style: AlertActionStyle = .default
     
     fileprivate var preferredLayoutAxis: UILayoutConstraintAxis {
         guard let text = label.text else {
@@ -139,12 +139,12 @@ internal class AlertSelectionComponentView: UIView {
     convenience init(title: String, style: AlertActionStyle) {
         self.init()
         self.style = style
-        if style == .Destructive {
+        if style == .destructive {
             self.tintColor = UIColor(red: 255/255.0, green: 0, blue: 33/255.0, alpha: 1.0)
         }
         label.text = title
         switch style {
-        case .Cancel:
+        case .cancel:
             label.font = UIFont.boldSystemFont(ofSize: 17.0)
         default:
             label.font = UIFont.systemFont(ofSize: 17.0)

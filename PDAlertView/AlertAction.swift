@@ -11,9 +11,9 @@ import Foundation
 internal typealias Handler = () -> Void
 
 public enum AlertActionStyle {
-    case Default
-    case Cancel
-    case Destructive
+    case `default`
+    case cancel
+    case destructive
 }
 
 public class AlertAction {
